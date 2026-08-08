@@ -1,5 +1,7 @@
 # LYT ResearchOS
 
+[![ResearchOS CI](https://github.com/Jeremy-Luyt/lyt-skill/actions/workflows/researchos-ci.yml/badge.svg)](https://github.com/Jeremy-Luyt/lyt-skill/actions/workflows/researchos-ci.yml)
+
 **Prompt-first, evidence-grounded, falsification-driven research engineering.**
 
 LYT ResearchOS is a reusable Agent Skill for scientific and technical work. It turns ambiguous research tasks into auditable decisions by forcing an agent to reconstruct the current truth, acquire fresh evidence when needed, compile a task-specific execution prompt, test competing hypotheses with minimal discriminative experiments, pass engineering gates, and immediately preserve the resulting knowledge.
@@ -25,18 +27,11 @@ The methodology grew out of a personal research-engineering workflow. External p
 .github/skills/research-os/
 ```
 
-The package follows the current Agent Skills convention: `SKILL.md` with YAML frontmatter plus optional protocols, roles, templates, checklists, examples, and scripts.
+The package uses `SKILL.md` with YAML frontmatter plus optional protocols, roles, templates, checklists, examples, evals, and scripts.
 
 ## Install
 
-GitHub CLI skill commands are currently in public preview. With a recent CLI that supports them:
-
-```bash
-gh skill preview Jeremy-Luyt/lyt-skill research-os
-gh skill install Jeremy-Luyt/lyt-skill research-os
-```
-
-Or copy `.github/skills/research-os/` into a supported project or user skill directory for your agent host.
+With an agent host that supports repository skills, use `.github/skills/research-os/` directly or copy that directory into the host's supported project/user skill location.
 
 ## Recommended project truth sources
 
@@ -62,10 +57,30 @@ If a project already has equivalent files, use them instead of duplicating state
 ├── templates/
 ├── checklists/
 ├── examples/
+├── evals/
 └── scripts/
 ```
 
 Root-level `AGENTS.md` and `.github/copilot-instructions.md` explain how agents should maintain this repository itself.
+
+## Validation and behavioral evals
+
+ResearchOS tests the workflow itself as a versioned artifact.
+
+Local static validation:
+
+```bash
+python .github/skills/research-os/scripts/self_test.py
+python .github/skills/research-os/scripts/test_linters.py
+python .github/skills/research-os/scripts/eval_spec_linter.py .github/skills/research-os/evals/benchmark.json
+python .github/skills/research-os/scripts/repository_linter.py
+```
+
+GitHub Actions runs these checks on push and pull request across Python 3.11–3.13.
+
+The 14-case behavioral benchmark covers workflow calibration, current evidence, hypothesis discipline, leakage/final-test governance, invalid runs, frozen baselines, GPU execution gates, scope control, shared-resource safety, metric semantics, source conflicts, and Builder/Challenger separation.
+
+Static CI validates the package and benchmark specification; it does **not** prove that an LLM follows the methodology. Real behavioral evaluation requires running the benchmark tasks with ResearchOS enabled and scoring observable outputs using `evals/rubric.md`.
 
 ## Scientific integrity
 
@@ -75,6 +90,6 @@ Operational safety is part of research quality: destructive actions, shared comp
 
 ## Version
 
-Current release: **v0.1.0**.
+Current release: **v0.1.0**. Evaluation/CI additions after v0.1.0 are tracked under `Unreleased` in `CHANGELOG.md`.
 
 License: MIT (see `LICENSE`).

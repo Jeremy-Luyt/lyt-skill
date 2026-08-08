@@ -1,0 +1,42 @@
+name: ResearchOS CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile scripts
+        run: python -m compileall -q .github/skills/research-os/scripts
+
+      - name: Run ResearchOS self-test
+        run: python .github/skills/research-os/scripts/self_test.py
+
+      - name: Run linter regression tests
+        run: python .github/skills/research-os/scripts/test_linters.py
+
+      - name: Validate behavioral benchmark specification
+        run: python .github/skills/research-os/scripts/eval_spec_linter.py .github/skills/research-os/evals/benchmark.json
+
+      - name: Validate repository package
+        run: python .github/skills/research-os/scripts/repository_linter.py

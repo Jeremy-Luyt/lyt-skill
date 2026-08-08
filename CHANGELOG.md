@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — 2026-08-08
+
+Validation and evaluation infrastructure:
+- added a 14-case domain-generic ResearchOS behavioral benchmark;
+- added a 12-dimension observable-behavior scoring rubric with hard-fail integrity rules;
+- added benchmark schema/coverage validation;
+- added regression tests for Prompt/Experiment/HANDOFF linters;
+- added repository/package linter and expanded self-test;
+- added GitHub Actions CI across Python 3.11–3.13;
+- documented the distinction between static CI validation and real agent/model behavioral evaluation.
+
 ## v0.1.0 — 2026-08-08
 
 Initial complete ResearchOS skill package.
