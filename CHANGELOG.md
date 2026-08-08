@@ -9,7 +9,8 @@ Validation and evaluation infrastructure:
 - added regression tests for Prompt/Experiment/HANDOFF linters;
 - added repository/package linter and expanded self-test;
 - added GitHub Actions CI across Python 3.11–3.13;
-- documented the distinction between static CI validation and real agent/model behavioral evaluation.
+- documented the distinction between static CI validation and real agent/model behavioral evaluation;
+- fixed Experiment Contract linting so the canonical template decision placeholder is accepted while real contracts still require one decision status.
 
 ## v0.1.0 — 2026-08-08
 
