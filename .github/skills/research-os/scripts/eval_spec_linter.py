@@ -16,6 +16,7 @@ ALLOWED_DECISIONS = {"KEEP", "REJECT", "DEFER", "INVALID", "NO_FIXED_DECISION"}
 REQUIRED_COVERAGE = {
     "trivial", "hypothesis", "fresh-evidence", "final-test", "invalid-run",
     "scope", "security", "frozen-baseline", "gpu", "meta-prompt",
+    "premise-audit", "dataset-integrity",
 }
 
 
