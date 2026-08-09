@@ -6,13 +6,16 @@ import re
 from pathlib import Path
 
 REQUIRED = [
-    "Role", "Mission", "Context / Current Truth", "Research Question",
-    "Observations", "Competing Hypotheses", "Evidence",
+    "Role", "Mission", "Context / Current Truth", "Premise Audit",
+    "Dataset Integrity Status", "Research Question", "Observations",
+    "Competing Hypotheses", "Evidence", "Ignored Variables / Costs / Biases",
     "Constraints / Frozen Components", "Method / Minimal Discriminative Action",
     "Changed Variable", "Controlled Variables", "Success Criteria",
     "Failure Criteria", "Scientific Kill Switch / Stop Conditions",
     "Validation Plan", "Decision Rights", "Output Contract", "Provenance",
 ]
+DATA_STATUSES = {"PASS", "PASS-WITH-LIMITATIONS", "BLOCKED", "INVALID-DATA", "N/A"}
+DATA_TEMPLATE_PREFIX = "PASS / PASS-WITH-LIMITATIONS / BLOCKED / INVALID-DATA / N/A"
 
 
 def headings(text: str) -> dict[str, str]:
@@ -40,6 +43,11 @@ def main() -> int:
         n = len(re.findall(r"(?m)^\s*[-*]?\s*H\d+\s*:", sections["Competing Hypotheses"]))
         if n < 2:
             errors.append("Competing Hypotheses should normally contain at least H1 and H2")
+    data_status = sections.get("Dataset Integrity Status", "").strip()
+    if data_status and not data_status.startswith(DATA_TEMPLATE_PREFIX):
+        first = data_status.splitlines()[0].strip().split(maxsplit=1)[0].rstrip(":")
+        if first not in DATA_STATUSES:
+            errors.append("Dataset Integrity Status must start with PASS / PASS-WITH-LIMITATIONS / BLOCKED / INVALID-DATA / N/A")
     if errors:
         print("PROMPT_CONTRACT_INVALID")
         for error in errors:
