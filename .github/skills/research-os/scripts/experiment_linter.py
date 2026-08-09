@@ -7,13 +7,17 @@ import re
 from pathlib import Path
 
 REQUIRED = [
-    "Experiment ID", "Question", "Hypothesis", "Baseline", "Changed Variable",
-    "Controlled Variables", "Data / Split", "Metrics", "Success Criterion",
-    "Failure Criterion", "Stop Condition", "Compute Budget", "Execution Gates",
-    "Output Paths", "Provenance", "Final Decision", "Reusable Lesson",
+    "Experiment ID", "Premise Status", "Question", "Hypothesis", "Baseline",
+    "Changed Variable", "Controlled Variables", "Dataset Integrity Status",
+    "Data / Split", "Annotation / Pairing / Coordinate Contract", "Metrics",
+    "Ignored Variables / Costs / Biases", "Success Criterion", "Failure Criterion",
+    "Stop Condition", "Compute Budget", "Execution Gates", "Output Paths",
+    "Provenance", "Final Decision", "Reusable Lesson",
 ]
 VALID_DECISIONS = {"KEEP", "REJECT", "DEFER", "INVALID"}
 TEMPLATE_DECISION_PLACEHOLDER = "KEEP / REJECT / DEFER / INVALID"
+DATA_STATUSES = {"PASS", "PASS-WITH-LIMITATIONS", "BLOCKED", "INVALID-DATA", "N/A"}
+DATA_TEMPLATE_PREFIX = "PASS / PASS-WITH-LIMITATIONS / BLOCKED / INVALID-DATA / N/A"
 
 
 def sections(text: str) -> dict[str, str]:
@@ -45,6 +49,16 @@ def main() -> int:
             errors.append("Final Decision contains multiple decision statuses")
         elif not tokens.issubset(VALID_DECISIONS):
             errors.append("invalid decision status")
+
+    data_status = data.get("Dataset Integrity Status", "").strip()
+    if data_status and not data_status.startswith(DATA_TEMPLATE_PREFIX):
+        first = data_status.splitlines()[0].strip().split(maxsplit=1)[0].rstrip(":")
+        if first not in DATA_STATUSES:
+            errors.append("Dataset Integrity Status must start with PASS / PASS-WITH-LIMITATIONS / BLOCKED / INVALID-DATA / N/A")
+
+    gates = data.get("Execution Gates", "")
+    if gates and "Dataset gate:" not in gates:
+        errors.append("Execution Gates must include Dataset gate")
 
     if errors:
         print("EXPERIMENT_CONTRACT_INVALID")
