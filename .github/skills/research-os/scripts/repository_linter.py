@@ -10,9 +10,11 @@ REPO_ROOT = SKILL_ROOT.parents[2]
 
 REQUIRED_ROOT = ["README.md", "AGENTS.md", "CHANGELOG.md", "LICENSE"]
 REQUIRED_SKILL = [
-    "SKILL.md", "REFERENCES.md", "protocols/prompt-compiler.md",
+    "SKILL.md", "REFERENCES.md", "protocols/premise-audit.md",
+    "protocols/dataset-integrity.md", "protocols/prompt-compiler.md",
     "protocols/evidence-acquisition.md", "protocols/prompt-evals.md",
-    "protocols/final-test-governance.md", "templates/prompt-contract.md",
+    "protocols/final-test-governance.md", "roles/data-benchmark-curator.md",
+    "checklists/dataset-integrity-checklist.md", "templates/prompt-contract.md",
     "templates/experiment-contract.md", "templates/handoff.md",
     "evals/benchmark.json", "evals/rubric.md",
 ]
