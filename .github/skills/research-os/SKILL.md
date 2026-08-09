@@ -1,16 +1,16 @@
 ---
 name: research-os
-description: Prompt-first, evidence-grounded, falsification-driven workflow for non-trivial research, architecture decisions, experiments, debugging, benchmarking, scientific implementation, reproducibility audits, and technical writing. Use when an agent should reconstruct project truth, acquire current external evidence, compile an explicit task Prompt Contract, test competing hypotheses, pass execution gates, make an auditable decision, and preserve the result.
+description: Prompt-first, evidence-grounded, falsification-driven workflow for non-trivial research, architecture decisions, experiments, debugging, benchmarking, scientific implementation, reproducibility audits, and technical writing. Use when an agent should audit the premise, validate dataset integrity, reconstruct project truth, acquire current external evidence, compile an explicit task Prompt Contract, test competing hypotheses, pass execution gates, make an auditable decision, and preserve the result.
 license: MIT
 ---
 
-# LYT ResearchOS v0.1.0
+# LYT ResearchOS v0.2.0
 
 ## Mission
 
 Turn ambiguous scientific and technical tasks into **evidence-grounded, falsifiable, reproducible decisions** while keeping execution safe and project knowledge durable.
 
-ResearchOS optimizes for **information gained and claim reliability**, not for apparent metric improvement, architectural novelty, or activity volume.
+ResearchOS optimizes for **information gained and claim reliability**, not for apparent metric improvement, architectural novelty, activity volume, or agreement with the user's preferred conclusion.
 
 ## When to use
 
@@ -21,6 +21,7 @@ Use the full workflow for non-trivial:
 - difficult debugging where multiple causes are plausible;
 - implementation that can change scientific conclusions;
 - literature/GitHub/data/pretrained-model selection;
+- dataset, annotation, split, pairing, sampling, or coordinate audits;
 - reproducibility or protocol audits;
 - scientific writing tied to claims/results;
 - expensive GPU/HPC workflows.
@@ -32,26 +33,49 @@ Use a lightweight version for routine work. Do **not** invoke the full research 
 Follow this order unless a safety emergency requires stopping earlier:
 
 1. **Classify** — task class, novelty, stakes, freshness, and operational risk.
-2. **Reconstruct current truth** — inspect project truth sources, code, logs, data protocol, and prior decisions before proposing changes.
-3. **Assign a functional role** — choose a role by objective and authority, not by flattering labels such as “world-class expert”. Read the relevant file in `roles/`.
-4. **Acquire evidence** — when current evidence can materially change the decision, search now. Read `protocols/evidence-acquisition.md`.
-5. **Compile a Prompt Contract** — before non-trivial action, write an explicit task specification using `templates/prompt-contract.md`. This is an inspectable execution contract, not hidden chain-of-thought.
-6. **Lint the contract** — ensure role, question, observations, competing hypotheses, evidence, controls, success/failure criteria, stop rules, validation, decision rights, outputs, and provenance are explicit.
-7. **Separate epistemic states** — use FACT / SOURCE / INFERENCE / HYPOTHESIS / ASSUMPTION / UNKNOWN where ambiguity matters. Read `protocols/epistemic-discipline.md`.
-8. **Generate competing hypotheses** — include plausible alternative explanations; define the smallest experiment that can distinguish them.
-9. **Rank candidate actions** — prioritize expected information gain × impact on the primary claim divided by compute + engineering + confounding. Read `protocols/scope-complexity.md`.
-10. **Challenge before execution** — for consequential work, have a Challenger audit the Builder's plan. Do not let Builder and Challenger simultaneously edit the same experiment.
-11. **Freeze the Experiment Contract** — baseline, changed variable, controls, split, metrics, thresholds, stop rule, output paths, and provenance.
-12. **Execute through gates** — preflight → smoke → pilot → full. Never jump directly to a costly full run unless the earlier gate is genuinely inapplicable and the reason is recorded.
-13. **Audit results** — verify code/protocol/data/metric correctness and alternative explanations before interpreting scientific meaning.
-14. **Decide** — exactly one of `KEEP`, `REJECT`, `DEFER`, `INVALID`.
-15. **Extract a conditional principle** — record what was learned, under which conditions, and what evidence would justify revisiting it.
-16. **Update project memory immediately** — experiment ledger, decision ledger, prompt log, and handoff/current-truth source.
-17. **Run a scope gate** — confirm that the next action advances the current primary claim, is required validation, belongs in backlog, or should become a separate project.
+2. **Audit the premise** — check for false/unsupported premises, logic jumps, decision-critical missing information, stale concrete claims, and omitted variables/costs/biases. Read `protocols/premise-audit.md`.
+3. **Reconstruct current truth** — inspect project truth sources, code, logs, prior decisions, and actual artifacts before proposing changes.
+4. **Run the Dataset Integrity Gate** — for data-bearing work, validate dataset identity/version, format/schema, coordinates/units, pairing, sampling, annotations, transforms, split/leakage, derived-data provenance, and representativeness before interpreting model behavior. Read `protocols/dataset-integrity.md`.
+5. **Assign a functional role** — choose a role by objective and authority, not by flattering labels such as “world-class expert”. Read the relevant file in `roles/`; use `roles/data-benchmark-curator.md` when dataset validity is central.
+6. **Acquire evidence** — when current evidence can materially change the decision, search now. Read `protocols/evidence-acquisition.md`.
+7. **Compile a Prompt Contract** — before non-trivial action, write an explicit task specification using `templates/prompt-contract.md`. This is an inspectable execution contract, not hidden chain-of-thought.
+8. **Lint the contract** — ensure premise audit, role, question, observations, competing hypotheses, evidence, dataset status where applicable, controls, success/failure criteria, stop rules, validation, decision rights, outputs, and provenance are explicit.
+9. **Separate epistemic states** — use FACT / SOURCE / USER-REPORTED / INFERENCE / HYPOTHESIS / ASSUMPTION / ALTERNATIVE / JUDGMENT / UNKNOWN where ambiguity matters. Read `protocols/epistemic-discipline.md`.
+10. **Generate competing hypotheses** — include plausible alternative explanations; define the smallest experiment that can distinguish them.
+11. **Rank candidate actions** — prioritize expected information gain × impact on the primary claim divided by compute + engineering + confounding. Read `protocols/scope-complexity.md`.
+12. **Challenge before execution** — for consequential work, have a Challenger audit the Builder's plan. Do not let Builder and Challenger simultaneously edit the same experiment.
+13. **Freeze the Experiment Contract** — premise, dataset/split status, baseline, changed variable, controls, metrics, thresholds, stop rule, output paths, and provenance.
+14. **Execute through gates** — data/preflight → smoke → pilot → full. Never jump directly to a costly full run unless the earlier gate is genuinely inapplicable and the reason is recorded.
+15. **Audit results** — verify code/protocol/data/metric correctness and alternative explanations before interpreting scientific meaning.
+16. **Decide** — exactly one of `KEEP`, `REJECT`, `DEFER`, `INVALID`.
+17. **Extract a conditional principle** — record what was learned, under which conditions, and what evidence would justify revisiting it.
+18. **Update project memory immediately** — experiment ledger, decision ledger, prompt log, dataset/protocol state, and handoff/current-truth source.
+19. **Run a scope gate** — confirm that the next action advances the current primary claim, is required validation, belongs in backlog, or should become a separate project.
+
+## Premise-first rule
+
+Before solving a consequential question, test whether the question is built on valid premises. Do not inherit the user's preferred explanation, publication claim, metric interpretation, or causal story as fact.
+
+When a concrete number, person, paper status, benchmark result, date, dataset property, or conclusion materially affects the decision, verify it from the strongest available source when feasible. If it cannot be verified, label its status instead of inventing certainty.
+
+If the evidence contradicts the requested framing, disagree directly and state the evidence, risk, plausible alternatives, and smallest resolving check.
+
+## Dataset-first rule
+
+For data-bearing research, dataset correctness is a gate, not a cleanup task after modeling. Before claim-bearing architecture changes or long runs, inspect the actual data and supervision for:
+- file/schema/shape/dtype validity;
+- axis, coordinate, orientation, spacing, unit, and transform-direction correctness;
+- sample identity, pairing, correspondence semantics, duplicate/derived samples;
+- train/validation/test leakage at subject and derived-data levels;
+- sampling unit, weighting, pseudo-replication, filtering and representativeness;
+- label ontology, missing-vs-unannotated semantics, annotator/provenance differences, and interpolation;
+- OOB/NaN/empty/corrupt artifacts and distribution shifts.
+
+Never infer correspondence identity from equal row index unless the data-generation protocol guarantees it. Never interpret a run scientifically when a material data/protocol defect invalidates the supervision or metric.
 
 ## Prompt-first rule
 
-Before a non-trivial implementation or experiment, the agent must create a **Prompt Contract** for itself. It should state what the agent is doing, why, what is already known, what remains uncertain, what must not change, and what result would stop the idea.
+Before a non-trivial implementation or experiment, the agent must create a **Prompt Contract** for itself. It should state what the agent is doing, why, what is already known, what remains uncertain, what premises/data have been audited, what must not change, and what result would stop the idea.
 
 Do not request or expose private chain-of-thought. The Prompt Contract contains only task-relevant, reviewable specifications and decision criteria.
 
@@ -69,24 +93,34 @@ Model memory is not sufficient when current external evidence can materially aff
 
 Record search date, query intent, source, and what decision the source affects.
 
+## Independent-judgment rule
+
+- Do not optimize for agreement, reassurance, or preserving an attractive narrative.
+- Distinguish what is observed, externally sourced, user-reported, inferred, hypothesized, assumed, alternative, unknown, or a subjective judgment.
+- Proactively surface material ignored variables, confounders, costs, biases, and alternative explanations that could reverse the decision.
+- Do not dump generic caveats; prioritize factors that materially affect the claim or action.
+- When disagreeing, be explicit about the basis and propose a resolving test rather than merely asserting a contrary opinion.
+
 ## Hard scientific rules
 
 - Never convert an observation into a causal conclusion without considering competing explanations.
-- Never call a protocol-broken run a negative scientific result; mark it `INVALID`.
+- Never call a protocol-broken or data-invalid run a negative scientific result; mark it `INVALID`.
 - Never silently modify a corrected/frozen baseline.
 - Change one scientific variable at a time in attribution-sensitive experiments.
 - Never tune repeatedly on the final test set.
 - Never remove low-performing samples/ROIs post hoc because they hurt the result.
 - Never report only successful seeds/samples/runs.
-- Never fabricate a citation, experiment, log, metric, checkpoint, or provenance field.
+- Never fabricate a citation, experiment, log, metric, checkpoint, data property, publication status, or provenance field.
+- Never assume same-index rows across samples are corresponding entities without an explicit identity contract.
 - Distinguish raw/intermediate metrics from downstream/end-to-end metrics when both exist.
 - If protocol versions differ, name them explicitly and do not merge their tables as if comparable.
+- If a dataset, annotation, coordinate, split, or evaluation defect can change the scientific interpretation, stop interpretation until the defect is resolved or bounded.
 
 ## Builder / Challenger pattern
 
 Use two modes for consequential work:
 - **Builder**: produce the smallest clean implementation/experiment that tests the frozen hypothesis.
-- **Challenger**: try to falsify the claim by finding leakage, protocol drift, confounding, capacity differences, metric artifacts, missing controls, or competing explanations.
+- **Challenger**: try to falsify the claim by finding false premises, data defects, leakage, protocol drift, confounding, capacity differences, metric artifacts, implementation bugs, missing controls, or competing explanations.
 
 The Challenger must produce actionable objections: every criticism should name the evidence or test needed to resolve it.
 
@@ -97,6 +131,8 @@ The Challenger must produce actionable objections: every criticism should name t
 - **DEFER** — run is valid but evidence is insufficient, low-priority, or blocked; do not pretend it answered the question.
 - **INVALID** — protocol, data, code, leakage, metric, or execution defect prevents scientific interpretation.
 
+Dataset gate statuses (`PASS`, `PASS-WITH-LIMITATIONS`, `BLOCKED`, `INVALID-DATA`) describe dataset readiness and do not replace the final experiment decision vocabulary.
+
 ## Recommended project truth sources
 
 If present, read equivalents of these before non-trivial work:
@@ -105,6 +141,7 @@ If present, read equivalents of these before non-trivial work:
 - `EXPERIMENTS.md`
 - `DECISIONS.md`
 - `PROMPTS.md`
+- dataset manifest / split manifest / annotation protocol / metric protocol
 - repository-level `AGENTS.md`
 
 Do not create duplicate truth sources when the project already has established equivalents.
@@ -113,6 +150,8 @@ Do not create duplicate truth sources when the project already has established e
 
 Read only what the current task needs:
 
+- Premise/logic audit → `protocols/premise-audit.md`
+- Dataset/split/annotation/sampling audit → `protocols/dataset-integrity.md`
 - Prompt design → `protocols/prompt-compiler.md`
 - Evidence search → `protocols/evidence-acquisition.md`
 - Fact/claim discipline → `protocols/epistemic-discipline.md`
