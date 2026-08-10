@@ -1,10 +1,10 @@
 ---
 name: research-os
-description: Prompt-first, evidence-grounded, falsification-driven workflow for non-trivial research, architecture decisions, experiments, debugging, benchmarking, scientific implementation, reproducibility audits, and technical writing. Use when an agent should audit the premise, validate dataset integrity, reconstruct project truth, acquire current external evidence, compile an explicit task Prompt Contract, test competing hypotheses, pass execution gates, make an auditable decision, and preserve the result.
+description: Prompt-first, evidence-grounded, falsification-driven workflow for non-trivial research, architecture decisions, experiments, debugging, benchmarking, scientific implementation, reproducibility audits, technical writing, dataset integrity, and context-safe handoff continuity. Use when an agent should audit the premise, validate dataset integrity, reconstruct project truth, acquire current external evidence, compile an explicit task Prompt Contract, test competing hypotheses, pass execution gates, make an auditable decision, and preserve the result before work or context is lost.
 license: MIT
 ---
 
-# LYT ResearchOS v0.2.0
+# LYT ResearchOS v0.2.1
 
 ## Mission
 
@@ -49,7 +49,7 @@ Follow this order unless a safety emergency requires stopping earlier:
 15. **Audit results** — verify code/protocol/data/metric correctness and alternative explanations before interpreting scientific meaning.
 16. **Decide** — exactly one of `KEEP`, `REJECT`, `DEFER`, `INVALID`.
 17. **Extract a conditional principle** — record what was learned, under which conditions, and what evidence would justify revisiting it.
-18. **Update project memory immediately** — experiment ledger, decision ledger, prompt log, dataset/protocol state, and handoff/current-truth source.
+18. **Update project memory and HANDOFF before completion** — experiment ledger, decision ledger, prompt log, dataset/protocol state, and handoff/current-truth source are part of the work product. Every non-trivial work session that changes durable state must update HANDOFF before being called done. If context is becoming low, write the handoff before starting optional new work. Read `protocols/handoff-continuity.md` and `protocols/decision-memory.md`.
 19. **Run a scope gate** — confirm that the next action advances the current primary claim, is required validation, belongs in backlog, or should become a separate project.
 
 ## Premise-first rule
@@ -100,6 +100,19 @@ Record search date, query intent, source, and what decision the source affects.
 - Proactively surface material ignored variables, confounders, costs, biases, and alternative explanations that could reverse the decision.
 - Do not dump generic caveats; prioritize factors that materially affect the claim or action.
 - When disagreeing, be explicit about the basis and propose a resolving test rather than merely asserting a contrary opinion.
+
+## Handoff and context-continuity rule
+
+HANDOFF/current-truth maintenance is a mandatory completion gate for non-trivial work, not optional documentation.
+
+- After every non-trivial work session that changes code, data/protocol state, experiments, jobs, conclusions, blockers, or next-step intent, update the established `HANDOFF.md` (or exact equivalent) before declaring the work complete.
+- Do not wait until a whole phase or project ends. Preserve state while it is still fresh.
+- If the user/host indicates the context window is becoming low, or the conversation has become long enough that prior state is at material risk of loss, stop starting optional new work and write HANDOFF first.
+- Before switching agent/person/session/model, pausing a long task, or leaving important running/uncommitted state, write HANDOFF.
+- If exact remaining context is unavailable, use conservative qualitative judgment; continuity takes priority over one more speculative task.
+- If context loss is imminent, write the minimal rescue handoff defined in `protocols/handoff-continuity.md` before cleanup or further experimentation.
+- Preserve superseded conclusions explicitly, record dirty/uncommitted state when material, record exact job/release/checkpoint/protocol identities when continuation depends on them, and never store secrets.
+- A non-trivial session whose durable handoff could not be written must be reported as `BLOCKED-CONTINUITY`, not silently called done.
 
 ## Hard scientific rules
 
@@ -161,6 +174,7 @@ Read only what the current task needs:
 - Review → `protocols/audit-and-review.md`
 - Final test → `protocols/final-test-governance.md`
 - Decisions/memory → `protocols/decision-memory.md`
+- Handoff/context continuity → `protocols/handoff-continuity.md`
 - Scope/complexity → `protocols/scope-complexity.md`
 - Shared compute/security → `protocols/security-operations.md`
 
