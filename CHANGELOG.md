@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.2.1 — 2026-08-10
+
+Handoff and context-continuity hardening:
+- made HANDOFF/current-truth maintenance a mandatory completion gate for every non-trivial work session that changes durable scientific, code, data/protocol, experiment, job, blocker, or next-step state;
+- added `protocols/handoff-continuity.md` with end-of-work, context-limit, agent/session switch, pause, and emergency rescue-handoff triggers;
+- added a conservative context-limit rule: when context is becoming low or prior state is at material risk of loss, stop starting optional work and preserve current truth first;
+- added `BLOCKED-CONTINUITY` for sessions whose durable handoff cannot be written because of an external failure;
+- extended HANDOFF content to record session/context boundary, dirty/uncommitted state when material, superseded conclusions, exact job/release/checkpoint/protocol identities, and the next safe action;
+- updated the HANDOFF template and linter to require a `Session / Context Continuity` section;
+- added the continuity protocol to repository package validation and progressive-disclosure guidance;
+- documented v0.2.1 in the root README.
+
 ## v0.2.0 — 2026-08-09
 
 Premise, data-integrity, and evaluation upgrade:
