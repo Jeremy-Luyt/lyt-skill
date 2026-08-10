@@ -4,7 +4,7 @@
 
 **Prompt-first, premise-audited, data-validated, evidence-grounded, falsification-driven research engineering.**
 
-LYT ResearchOS is a reusable Agent Skill for scientific and technical work. It turns ambiguous research tasks into auditable decisions by forcing an agent to audit the question's premises, validate task-relevant dataset integrity, reconstruct the current truth, acquire fresh evidence when needed, compile a task-specific execution prompt, test competing hypotheses with minimal discriminative experiments, pass engineering gates, and immediately preserve the resulting knowledge.
+LYT ResearchOS is a reusable Agent Skill for scientific and technical work. It turns ambiguous research tasks into auditable decisions by forcing an agent to audit the question's premises, validate task-relevant dataset integrity, reconstruct the current truth, acquire fresh evidence when needed, compile a task-specific execution prompt, test competing hypotheses with minimal discriminative experiments, pass engineering gates, and immediately preserve the resulting knowledge before the work session or context is lost.
 
 The methodology grew out of a personal research-engineering workflow. External prompting/agent documentation informs packaging and interoperability; the workflow itself is maintained as an explicit, versioned research protocol.
 
@@ -24,6 +24,7 @@ The methodology grew out of a personal research-engineering workflow. External p
 - **Builder / Challenger separation** — implementation and adversarial review are distinct roles; they should not edit the same experiment simultaneously.
 - **KEEP / REJECT / DEFER / INVALID** — every completed experiment ends in an explicit decision.
 - **Immediate knowledge retention** — prompts, evidence, dataset/protocol state, experiments, decisions, and handoffs are updated as part of the work, not reconstructed later.
+- **Handoff before context loss** — every non-trivial work session that changes durable project state must update HANDOFF before being called complete; if context capacity is becoming low, preserving current truth takes priority over starting optional new work.
 
 ## Skill location
 
@@ -43,7 +44,7 @@ ResearchOS works best when the target project maintains equivalents of:
 
 ```text
 PROJECT_PROFILE.md   # project definition, claims, frozen components, data/protocols
-HANDOFF.md           # current truth and exact next action
+HANDOFF.md           # current truth, context continuity, and exact next action
 EXPERIMENTS.md       # experiment ledger
 DECISIONS.md         # KEEP / REJECT / DEFER / INVALID records
 PROMPTS.md           # generated Prompt Contracts
@@ -60,6 +61,7 @@ If a project already has equivalent files, use them instead of duplicating state
 ├── protocols/
 │   ├── premise-audit.md
 │   ├── dataset-integrity.md
+│   ├── handoff-continuity.md
 │   └── ...
 ├── roles/
 │   ├── data-benchmark-curator.md
@@ -98,10 +100,10 @@ Static CI validates the package and benchmark specification; it does **not** pro
 
 ResearchOS forbids silent final-test tuning, post-hoc removal of inconvenient samples/ROIs, selective reporting, fabricated citations/results/data properties/publication status, unrecorded protocol changes, assuming cross-sample correspondence from row index without an identity contract, and treating a protocol/data-invalid run as scientific evidence.
 
-Operational safety is part of research quality: destructive actions, shared compute, credential handling, checkpoint provenance, and data mutation require explicit boundaries.
+Operational safety is part of research quality: destructive actions, shared compute, credential handling, checkpoint provenance, data mutation, and context/handoff continuity require explicit boundaries.
 
 ## Version
 
-Current release: **v0.2.0**.
+Current release: **v0.2.1**.
 
 License: MIT (see `LICENSE`).
