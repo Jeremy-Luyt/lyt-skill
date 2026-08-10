@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.2.2 — 2026-08-10
+
+Risk-proportional audit and execution-calibration update:
+- added `protocols/risk-proportional-audit.md` with R0/R1/R2/R3 review tiers covering read-only diagnostics, reversible isolated implementation, claim-bearing experiments, and final-test/destructive/shared/irreversible operations;
+- added explicit audit-budget targets for low-risk work: roughly 10–15% of planned effort/context before first execution for R0 and roughly 20–25% before implementation/smoke for R1, unless a concrete blocker is discovered;
+- introduced finding severities `BLOCK-EXECUTION`, `BLOCK-INTERPRETATION`, `BOUNDS-CLAIM`, and `FOLLOW-UP` so non-blocking hardening cannot silently become an execution blocker;
+- added a Challenger stopping rule: once tier-required checks pass and no execution blocker remains, further audit expansion requires a named plausible failure mode, the decision it could reverse, and a bounded resolving check;
+- added `PROCESS-ISSUE: OVER-AUDITING` for review drift where repeated non-blocking checks consume a low-risk task instead of allowing the smallest safe discriminative experiment to run;
+- updated execution gates so bounded read-only diagnostics do not inherit release/final-test/destructive controls that are irrelevant to their safety or validity;
+- extended scope/complexity control to count audit/process overhead, not only model/code complexity;
+- updated the behavioral rubric so both under-processing and over-processing are workflow-governance failures while preserving hard scientific-integrity and operational-safety blockers;
+- added benchmark case `E17 Low-risk diagnostic trapped in review` and made `audit-budget` mandatory benchmark coverage;
+- added the new protocol to package validation and documented ResearchOS v0.2.2 in `SKILL.md` and `README.md`.
+
 ## v0.2.1 — 2026-08-10
 
 Handoff and context-continuity hardening:
