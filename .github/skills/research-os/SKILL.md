@@ -1,16 +1,16 @@
 ---
 name: research-os
-description: Prompt-first, evidence-grounded, falsification-driven workflow for non-trivial research, architecture decisions, experiments, debugging, benchmarking, scientific implementation, reproducibility audits, technical writing, dataset integrity, and context-safe handoff continuity. Use when an agent should audit the premise, validate dataset integrity, reconstruct project truth, acquire current external evidence, compile an explicit task Prompt Contract, test competing hypotheses, pass execution gates, make an auditable decision, and preserve the result before work or context is lost.
+description: Prompt-first, evidence-grounded, falsification-driven workflow for non-trivial research, architecture decisions, experiments, debugging, benchmarking, scientific implementation, reproducibility audits, technical writing, dataset integrity, risk-proportional review, and context-safe handoff continuity. Use when an agent should audit the premise, validate dataset integrity, reconstruct project truth, acquire current external evidence, compile an explicit task Prompt Contract, test competing hypotheses, scale review to actual risk, pass execution gates, make an auditable decision, and preserve the result before work or context is lost.
 license: MIT
 ---
 
-# LYT ResearchOS v0.2.1
+# LYT ResearchOS v0.2.2
 
 ## Mission
 
 Turn ambiguous scientific and technical tasks into **evidence-grounded, falsifiable, reproducible decisions** while keeping execution safe and project knowledge durable.
 
-ResearchOS optimizes for **information gained and claim reliability**, not for apparent metric improvement, architectural novelty, activity volume, or agreement with the user's preferred conclusion.
+ResearchOS optimizes for **information gained and claim reliability**, not for apparent metric improvement, architectural novelty, activity volume, review volume, or agreement with the user's preferred conclusion.
 
 ## When to use
 
@@ -26,13 +26,13 @@ Use the full workflow for non-trivial:
 - scientific writing tied to claims/results;
 - expensive GPU/HPC workflows.
 
-Use a lightweight version for routine work. Do **not** invoke the full research cycle for trivial formatting, obvious typo fixes, or low-risk mechanical edits.
+Use a lightweight version for routine work. Do **not** invoke the full research cycle for trivial formatting, obvious typo fixes, low-risk mechanical edits, or bounded read-only diagnostics that only need a narrow preflight.
 
 ## Core workflow
 
 Follow this order unless a safety emergency requires stopping earlier:
 
-1. **Classify** — task class, novelty, stakes, freshness, and operational risk.
+1. **Classify** — task class, novelty, stakes, freshness, operational risk, and review tier (R0/R1/R2/R3). Read `protocols/risk-proportional-audit.md` when review depth matters.
 2. **Audit the premise** — check for false/unsupported premises, logic jumps, decision-critical missing information, stale concrete claims, and omitted variables/costs/biases. Read `protocols/premise-audit.md`.
 3. **Reconstruct current truth** — inspect project truth sources, code, logs, prior decisions, and actual artifacts before proposing changes.
 4. **Run the Dataset Integrity Gate** — for data-bearing work, validate dataset identity/version, format/schema, coordinates/units, pairing, sampling, annotations, transforms, split/leakage, derived-data provenance, and representativeness before interpreting model behavior. Read `protocols/dataset-integrity.md`.
@@ -42,10 +42,10 @@ Follow this order unless a safety emergency requires stopping earlier:
 8. **Lint the contract** — ensure premise audit, role, question, observations, competing hypotheses, evidence, dataset status where applicable, controls, success/failure criteria, stop rules, validation, decision rights, outputs, and provenance are explicit.
 9. **Separate epistemic states** — use FACT / SOURCE / USER-REPORTED / INFERENCE / HYPOTHESIS / ASSUMPTION / ALTERNATIVE / JUDGMENT / UNKNOWN where ambiguity matters. Read `protocols/epistemic-discipline.md`.
 10. **Generate competing hypotheses** — include plausible alternative explanations; define the smallest experiment that can distinguish them.
-11. **Rank candidate actions** — prioritize expected information gain × impact on the primary claim divided by compute + engineering + confounding. Read `protocols/scope-complexity.md`.
-12. **Challenge before execution** — for consequential work, have a Challenger audit the Builder's plan. Do not let Builder and Challenger simultaneously edit the same experiment.
+11. **Rank candidate actions** — prioritize expected information gain × impact on the primary claim divided by compute + engineering + annotation + coordination + confounding. Read `protocols/scope-complexity.md`.
+12. **Challenge before execution, proportional to risk** — for consequential work, have a Challenger audit the Builder's plan, but do not apply final-test/release/destructive controls to a low-risk diagnostic without a concrete reason. Every finding must state whether it blocks execution, blocks interpretation, bounds the claim, or is follow-up. Read `protocols/audit-and-review.md` and `protocols/risk-proportional-audit.md`.
 13. **Freeze the Experiment Contract** — premise, dataset/split status, baseline, changed variable, controls, metrics, thresholds, stop rule, output paths, and provenance.
-14. **Execute through gates** — data/preflight → smoke → pilot → full. Never jump directly to a costly full run unless the earlier gate is genuinely inapplicable and the reason is recorded.
+14. **Execute through applicable gates** — data/preflight → smoke → pilot → full. Never jump directly to a costly full run unless earlier gates are genuinely inapplicable and the reason is recorded; likewise, do not manufacture unnecessary gates for a bounded R0 diagnostic.
 15. **Audit results** — verify code/protocol/data/metric correctness and alternative explanations before interpreting scientific meaning.
 16. **Decide** — exactly one of `KEEP`, `REJECT`, `DEFER`, `INVALID`.
 17. **Extract a conditional principle** — record what was learned, under which conditions, and what evidence would justify revisiting it.
@@ -101,6 +101,21 @@ Record search date, query intent, source, and what decision the source affects.
 - Do not dump generic caveats; prioritize factors that materially affect the claim or action.
 - When disagreeing, be explicit about the basis and propose a resolving test rather than merely asserting a contrary opinion.
 
+## Risk-proportional audit rule
+
+Audit depth must be proportional to scientific risk, operational risk, irreversibility, and claim stakes. Review is a means to valid action, not an end in itself.
+
+- **R0 read-only diagnostic** — one bounded preflight, then execute when source/checkpoint identity, development/validation scope, fixed comparison semantics, output isolation, and no hidden write risk are established. As a planning target, pre-execution review should normally consume no more than roughly 10–15% of task effort/context.
+- **R1 reversible isolated implementation** — add focused unit/baseline-containment/state-drift checks and a smoke path. As a planning target, pre-execution review should normally consume no more than roughly 20–25% before implementation/smoke unless a concrete blocker appears.
+- **R2 claim-bearing experiment** — use full task-relevant data/protocol/provenance gates, smoke/pilot, and post-run audit; unresolved validity risks may justify deeper review.
+- **R3 final-test/destructive/shared/irreversible** — use the strongest applicable final-test, authorization, provenance, immutability, and security controls. Budget guidance never overrides a real blocker.
+
+Every finding must be classified as `BLOCK-EXECUTION`, `BLOCK-INTERPRETATION`, `BOUNDS-CLAIM`, or `FOLLOW-UP`. Only a real execution blocker stops a safe bounded diagnostic. Interpretation blockers stop claim-bearing interpretation; bounded-claim and follow-up findings must not silently postpone execution.
+
+Once tier-required checks pass and no execution blocker remains, the Challenger must stop expanding pre-execution review unless the next audit branch names a plausible failure mode, the decision it could reverse, and a bounded resolving check. Repeated non-blocking audit expansion is `PROCESS-ISSUE: OVER-AUDITING` and should return to the smallest safe discriminative experiment.
+
+This rule never weakens final-test governance, dataset validity, frozen-baseline attribution, authorization, credential security, or destructive/shared-resource safeguards. Escalate the risk tier when a material issue is discovered.
+
 ## Handoff and context-continuity rule
 
 HANDOFF/current-truth maintenance is a mandatory completion gate for non-trivial work, not optional documentation.
@@ -128,14 +143,15 @@ HANDOFF/current-truth maintenance is a mandatory completion gate for non-trivial
 - Distinguish raw/intermediate metrics from downstream/end-to-end metrics when both exist.
 - If protocol versions differ, name them explicitly and do not merge their tables as if comparable.
 - If a dataset, annotation, coordinate, split, or evaluation defect can change the scientific interpretation, stop interpretation until the defect is resolved or bounded.
+- Never let a non-blocking audit tangent silently replace the frozen primary task; preserve it as `FOLLOW-UP` unless evidence justifies escalation.
 
 ## Builder / Challenger pattern
 
 Use two modes for consequential work:
 - **Builder**: produce the smallest clean implementation/experiment that tests the frozen hypothesis.
-- **Challenger**: try to falsify the claim by finding false premises, data defects, leakage, protocol drift, confounding, capacity differences, metric artifacts, implementation bugs, missing controls, or competing explanations.
+- **Challenger**: try to falsify the claim by finding false premises, data defects, leakage, protocol drift, confounding, capacity differences, metric artifacts, implementation bugs, missing controls, or competing explanations, at a depth proportional to task risk.
 
-The Challenger must produce actionable objections: every criticism should name the evidence or test needed to resolve it.
+The Challenger must produce actionable objections: every criticism should name the evidence/test needed to resolve it and its operational severity. The Challenger is not rewarded for objection count or token use.
 
 ## Decision vocabulary
 
@@ -170,6 +186,7 @@ Read only what the current task needs:
 - Fact/claim discipline → `protocols/epistemic-discipline.md`
 - Competing hypotheses → `protocols/hypothesis-testing.md`
 - Experiment contract → `protocols/experiment-design.md`
+- Risk tier / audit budget / blocker severity → `protocols/risk-proportional-audit.md`
 - Execution → `protocols/execution-gates.md`
 - Review → `protocols/audit-and-review.md`
 - Final test → `protocols/final-test-governance.md`
