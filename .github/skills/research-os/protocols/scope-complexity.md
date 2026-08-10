@@ -30,6 +30,10 @@ Watch the ratio:
 
 If it falls, simplify the experiment or return to diagnosis.
 
+This detector applies to **process complexity as well as model complexity**. Safety/review work that no longer changes execution safety, claim validity, attribution, or the decision can itself become over-engineering. Use `risk-proportional-audit.md` to distinguish blockers from non-blocking hardening.
+
 ## Architecture escalation
 
 Do not move from a local failure to a large architecture rewrite without evidence that the simpler intervention cannot answer the question.
+
+Likewise, do not move a low-risk diagnostic into a high-assurance release/final-test review regime without a concrete risk that justifies escalation.
