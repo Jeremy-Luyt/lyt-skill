@@ -6,10 +6,10 @@ import re
 from pathlib import Path
 
 REQUIRED = [
-    "Current Truth", "Trusted Results", "Invalid / Untrusted Results",
-    "Frozen Defaults and Protocols", "Rejected / Deferred Routes",
-    "Active Hypotheses", "Known Risks / Blockers", "Running Jobs / External State",
-    "Exact Next Action", "Provenance",
+    "Session / Context Continuity", "Current Truth", "Trusted Results",
+    "Invalid / Untrusted Results", "Frozen Defaults and Protocols",
+    "Rejected / Deferred Routes", "Active Hypotheses", "Known Risks / Blockers",
+    "Running Jobs / External State", "Exact Next Action", "Provenance",
 ]
 
 
