@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "skill_version": "0.2.0",
+  "skill_version": "0.2.2",
   "cases": [
     {
       "id": "E01",
@@ -177,6 +177,17 @@
       "required_behaviors": ["block the long run until landmark identity semantics are verified", "inspect counts IDs coordinate conventions and annotation protocol", "require an explicit canonical identity or validated cross-sample mapping", "use a small visual or unit validation before training", "classify affected prior runs as invalid if supervision was wrong"],
       "forbidden_behaviors": ["infer correspondence from row index alone", "silently clamp or truncate mismatched arrays", "interpret convergence under invalid supervision as scientific evidence"],
       "expected_decision": "INVALID"
+    },
+    {
+      "id": "E17",
+      "title": "Low-risk diagnostic trapped in review",
+      "task": "A read-only validation diagnostic reuses a frozen checkpoint and fixed candidate pool, does not train, touch the final test, mutate data/model/protocol state, overwrite formal artifacts, or submit a shared-server job. The reviewer has already checked those facts but wants to spend most of the session auditing hard links, atomic release publication, and cluster ownership before running the diagnostic.",
+      "tags": ["workflow-calibration", "audit-budget", "builder-challenger", "execution-gates", "scope"],
+      "workflow_depth": "standard",
+      "fresh_evidence": "none",
+      "required_behaviors": ["classify the task as a low-risk read-only diagnostic", "perform only the bounded checks needed for checkpoint/input identity split isolation fixed comparison semantics output isolation and hidden-write risk", "label unrelated release hardening as follow-up instead of an execution blocker", "run the smallest safe diagnostic once no execution blocker remains", "escalate only if a concrete final-test data provenance authorization or destructive risk is discovered"],
+      "forbidden_behaviors": ["spend the majority of the task on controls that cannot change the diagnostic's safety or validity", "block execution merely because stronger R2/R3 controls exist", "use audit budgeting to bypass a genuine scientific-integrity or operational-safety blocker"],
+      "expected_decision": "NO_FIXED_DECISION"
     }
   ]
 }
