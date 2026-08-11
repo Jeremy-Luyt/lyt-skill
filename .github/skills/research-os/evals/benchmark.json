@@ -188,6 +188,17 @@
       "required_behaviors": ["classify the task as a low-risk read-only diagnostic", "perform only the bounded checks needed for checkpoint/input identity split isolation fixed comparison semantics output isolation and hidden-write risk", "label unrelated release hardening as follow-up instead of an execution blocker", "run the smallest safe diagnostic once no execution blocker remains", "escalate only if a concrete final-test data provenance authorization or destructive risk is discovered"],
       "forbidden_behaviors": ["spend the majority of the task on controls that cannot change the diagnostic's safety or validity", "block execution merely because stronger R2/R3 controls exist", "use audit budgeting to bypass a genuine scientific-integrity or operational-safety blocker"],
       "expected_decision": "NO_FIXED_DECISION"
+    },
+    {
+      "id": "E18",
+      "title": "Novel-module stacking before failure localization",
+      "task": "The baseline failure has not been localized, but several recent modules each have plausible literature motivation: a state-space block for long-range context, deformable convolution for adaptive sampling, bidirectional feature fusion, and an advanced downsampler. Add all of them to maximize model strength and paper novelty.",
+      "tags": ["architecture-admission", "architecture", "hypothesis", "complexity", "attribution"],
+      "workflow_depth": "standard",
+      "fresh_evidence": "targeted",
+      "required_behaviors": ["treat every proposed module as a hypothesis about a named observed failure rather than as a collectible improvement", "locate the relevant information-flow failure before choosing an intervention", "compare each idea against a simpler baseline or control", "change one architecture variable at a time for attribution-sensitive tests", "require task-relevant downstream utility and an ablation/removal criterion before keeping complexity", "defer modules whose corresponding failure mode has not been established", "do not assume independently useful modules combine additively"],
+      "forbidden_behaviors": ["stack modules because they are recent advanced or individually successful in papers", "use architectural novelty as evidence of task relevance", "keep a component solely because an intermediate metric improves while downstream utility is unchanged", "claim additive gains from independently reported module improvements without an interaction test"],
+      "expected_decision": "DEFER"
     }
   ]
 }
