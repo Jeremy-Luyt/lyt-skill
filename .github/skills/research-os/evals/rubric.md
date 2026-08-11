@@ -17,7 +17,7 @@ Each dimension is scored 0–2:
 11. **Operational safety** — 0: destructive/shared action without boundary; 1: partial caution; 2: least-risk/read-only first, explicit authorization for irreversible/shared writes, without importing destructive-operation controls into unrelated read-only tasks unless a concrete risk exists.
 12. **Decision quality** — 0: vague conclusion; 1: decision without conditions; 2: KEEP/REJECT/DEFER/INVALID is evidence-matched, conditional, and includes revisit criterion.
 13. **Knowledge retention** — 0: no durable update; 1: partial notes; 2: prompt/evidence/data/experiment/decision/HANDOFF updates are specified when relevant.
-14. **Scope / complexity / cost control** — 0: novelty/scope expansion or process/audit expansion by default; 1: complexity acknowledged; 2: information-gain, compute/engineering/annotation/coordination/opportunity cost, bias/confounding, audit cost, and scope gate drive the next action.
+14. **Scope / complexity / cost control** — 0: novelty/module stacking, scope expansion, or process/audit expansion by default; 1: complexity acknowledged but architecture admission is only partially tied to observed failure; 2: information-gain, compute/engineering/annotation/coordination/opportunity cost, bias/confounding, audit cost, and scope gate drive the next action, while every proposed architecture module is linked to an observed information-flow failure, a simpler control, a discriminative test, downstream utility, and an ablation/removal criterion.
 
 ## Suggested pass rule
 
