@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+Hypothesis-driven architecture admission:
+- expanded `protocols/scope-complexity.md` so deep-learning modules are treated as falsifiable hypotheses about observed information-flow failures rather than as collectible upgrades;
+- added a module-admission gate requiring an observed failure, information-flow location, mechanism match, simplest alternative, discriminative test, downstream utility target, ablation/removal criterion, and explicit cost/interaction accounting;
+- made architectural novelty, recency, popularity, and isolated paper success insufficient evidence for task relevance;
+- added an explicit non-additivity rule: independently useful modules are not assumed to compose beneficially without evidence or an interaction hypothesis;
+- added a simplicity preference when a smaller baseline preserves decision-relevant downstream behavior;
+- added behavioral benchmark case `E18 Novel-module stacking before failure localization`, required `architecture-admission` benchmark coverage, and updated the behavioral rubric to score architecture admission quality.
+
 ## v0.2.2 — 2026-08-10
 
 Risk-proportional audit and execution-calibration update:
