@@ -18,6 +18,7 @@ The methodology grew out of a personal research-engineering workflow. External p
 - **Just-in-time evidence acquisition** — if current external evidence can materially change a decision, search primary literature, official docs, GitHub implementations/issues/PRs, datasets, pretrained weights, and evaluation protocols before acting.
 - **Observation before explanation** — do not convert a plausible mechanism into a conclusion until alternatives are tested.
 - **Competing hypotheses before architecture changes** — identify the smallest experiment that distinguishes plausible explanations.
+- **Hypothesis-driven architecture admission** — deep-learning modules are not collectibles. Admit a component only when it maps to an observed information-flow failure, beats or enables something a simpler control cannot, improves decision-relevant downstream behavior, and survives an ablation/removal criterion. Architectural novelty or recency is not task evidence, and independently useful modules are not assumed to combine additively.
 - **Minimal discriminative experiments** — maximize information gained per unit of compute, engineering/annotation effort, opportunity cost, and confounding.
 - **Risk-proportional audit** — classify review as R0/R1/R2/R3; low-risk read-only diagnostics get a bounded preflight, while claim-bearing/final-test/destructive/shared-resource work gets progressively stronger controls. Non-blocking findings do not silently become execution blockers.
 - **Frozen baselines and protocols** — corrected baselines, splits, metrics, and final-test rules cannot drift silently.
@@ -94,7 +95,7 @@ python .github/skills/research-os/scripts/repository_linter.py
 
 GitHub Actions runs these checks on push and pull request across Python 3.11–3.13.
 
-The 17-case behavioral benchmark covers workflow calibration, premise/logic auditing, dataset/pairing integrity, current evidence, hypothesis discipline, leakage/final-test governance, invalid runs, frozen baselines, GPU execution gates, scope control, shared-resource safety, metric semantics, source conflicts, Builder/Challenger separation, and risk-proportional audit budgeting.
+The 18-case behavioral benchmark covers workflow calibration, premise/logic auditing, dataset/pairing integrity, current evidence, hypothesis discipline, leakage/final-test governance, invalid runs, frozen baselines, GPU execution gates, scope control, shared-resource safety, metric semantics, source conflicts, Builder/Challenger separation, risk-proportional audit budgeting, and hypothesis-driven architecture admission.
 
 Static CI validates the package and benchmark specification; it does **not** prove that an LLM follows the methodology. Real behavioral evaluation requires running the benchmark tasks with ResearchOS enabled and scoring observable outputs using `evals/rubric.md`.
 
