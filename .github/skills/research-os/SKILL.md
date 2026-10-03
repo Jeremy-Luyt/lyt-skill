@@ -4,7 +4,7 @@ description: Prompt-first, evidence-grounded, falsification-driven workflow for 
 license: MIT
 ---
 
-# LYT ResearchOS v0.2.2
+# LYT ResearchOS v0.3.0
 
 ## Mission
 
@@ -37,7 +37,7 @@ Follow this order unless a safety emergency requires stopping earlier:
 3. **Reconstruct current truth** — inspect project truth sources, code, logs, prior decisions, and actual artifacts before proposing changes.
 4. **Run the Dataset Integrity Gate** — for data-bearing work, validate dataset identity/version, format/schema, coordinates/units, pairing, sampling, annotations, transforms, split/leakage, derived-data provenance, and representativeness before interpreting model behavior. Read `protocols/dataset-integrity.md`.
 5. **Assign a functional role** — choose a role by objective and authority, not by flattering labels such as “world-class expert”. Read the relevant file in `roles/`; use `roles/data-benchmark-curator.md` when dataset validity is central.
-6. **Acquire evidence** — when current evidence can materially change the decision, search now. Read `protocols/evidence-acquisition.md`.
+6. **Acquire evidence** — when current evidence can materially change the decision, search now. Read `protocols/evidence-acquisition.md`. When a conclusion depends on the exact behavior of external code, APIs, metrics, benchmark scripts, licenses, pretrained artifacts, or runtime conventions, also read `protocols/source-semantic-audit.md` and verify semantics from primary evidence rather than memory.
 7. **Compile a Prompt Contract** — before non-trivial action, write an explicit task specification using `templates/prompt-contract.md`. This is an inspectable execution contract, not hidden chain-of-thought.
 8. **Lint the contract** — ensure premise audit, role, question, observations, competing hypotheses, evidence, dataset status where applicable, controls, success/failure criteria, stop rules, validation, decision rights, outputs, and provenance are explicit.
 9. **Separate epistemic states** — use FACT / SOURCE / USER-REPORTED / INFERENCE / HYPOTHESIS / ASSUMPTION / ALTERNATIVE / JUDGMENT / UNKNOWN where ambiguity matters. Read `protocols/epistemic-discipline.md`.
@@ -93,6 +93,22 @@ Model memory is not sufficient when current external evidence can materially aff
 
 Record search date, query intent, source, and what decision the source affects.
 
+## Source-semantic audit rule
+
+When a claim depends on the exact behavior of software, metrics, benchmark code, licenses, deformation conventions, or timing protocols, **claims must descend from evidence; never ascend from memory**.
+
+- Prefer pinned source code and official release-specific evidence over remembered API names, secondary summaries, or naming similarity.
+- Separate **symbol existence**, **actual call path**, **training/inference/evaluation role**, **paper-reported usage**, and **numerical semantics**. A function that exists is not automatically the metric reported by a paper or benchmark.
+- Use implementation-audit statuses `VERIFIED`, `OBSERVED`, `INFERRED`, `UNVERIFIED`, and `CONTRADICTED` for decision-critical software/metric claims.
+- Before a metric enters a claim-bearing table, freeze its representation, direction, grid, axis/component order, units/spacing, interpolation, mask/domain, discretization, boundary/crop, threshold, reduction, empty-case policy, and exact implementation revision.
+- No evaluator enters a paper/benchmark table without deterministic synthetic regression tests appropriate to the metric. Deformation/Jacobian metrics must include identity, analytic transform, independent numerical cross-check, background/mask, and unit/normalization-conversion tests.
+- An independent implementation is a cross-check, not automatically a gold standard; align semantics and compare on the common valid domain.
+- If new primary evidence invalidates a frozen metric/protocol, preserve the old artifact, create a versioned successor, state the semantic delta, and rerun every affected method. Never selectively change the evaluator because one method performs poorly.
+- Do not call a protocol, metric, implementation, or result "standard", "official", "canonical", "commonly used", or "SOTA" unless primary evidence supports that exact statement.
+- If repository provenance, API existence, license, transformation semantics, or metric behavior remains materially unresolved, fail closed: mark `UNVERIFIED`/`BLOCKED`, state what evidence is missing, and do not fill the gap from memory.
+
+Read `protocols/source-semantic-audit.md` for the full contract and regression-gate requirements.
+
 ## Independent-judgment rule
 
 - Do not optimize for agreement, reassurance, or preserving an attractive narrative.
@@ -138,10 +154,13 @@ HANDOFF/current-truth maintenance is a mandatory completion gate for non-trivial
 - Never tune repeatedly on the final test set.
 - Never remove low-performing samples/ROIs post hoc because they hurt the result.
 - Never report only successful seeds/samples/runs.
-- Never fabricate a citation, experiment, log, metric, checkpoint, data property, publication status, or provenance field.
+- Never fabricate a citation, experiment, log, metric, checkpoint, data property, publication status, provenance field, API symbol, license, benchmark convention, or implementation behavior.
 - Never assume same-index rows across samples are corresponding entities without an explicit identity contract.
 - Distinguish raw/intermediate metrics from downstream/end-to-end metrics when both exist.
 - If protocol versions differ, name them explicitly and do not merge their tables as if comparable.
+- Never treat a helper/loss function as a benchmark metric merely because its name sounds relevant; verify its call path and reported role.
+- Never let identically named metrics from different repositories enter a comparison table until their semantics are shown compatible.
+- Never describe a project-defined timing/evaluation convention as an external community standard without primary evidence.
 - If a dataset, annotation, coordinate, split, or evaluation defect can change the scientific interpretation, stop interpretation until the defect is resolved or bounded.
 - Never let a non-blocking audit tangent silently replace the frozen primary task; preserve it as `FOLLOW-UP` unless evidence justifies escalation.
 
@@ -183,6 +202,7 @@ Read only what the current task needs:
 - Dataset/split/annotation/sampling audit → `protocols/dataset-integrity.md`
 - Prompt design → `protocols/prompt-compiler.md`
 - Evidence search → `protocols/evidence-acquisition.md`
+- Source/API/metric/benchmark semantic audit → `protocols/source-semantic-audit.md`
 - Fact/claim discipline → `protocols/epistemic-discipline.md`
 - Competing hypotheses → `protocols/hypothesis-testing.md`
 - Experiment contract → `protocols/experiment-design.md`
