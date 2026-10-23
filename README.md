@@ -25,6 +25,7 @@ The methodology grew out of a personal research-engineering workflow. External p
 - **Data gate → preflight → smoke → pilot → full** — expensive execution is earned through progressively stronger gates, while inapplicable gates are recorded rather than manufactured.
 - **Builder / Challenger separation** — implementation and adversarial review are distinct roles; they should not edit the same experiment simultaneously, and the Challenger is judged by decision-relevant objections rather than objection count.
 - **KEEP / REJECT / DEFER / INVALID** — every completed experiment ends in an explicit decision.
+- **Explore boldly; promote rigorously** — lack of prior evidence must not be mistaken for negative evidence; admit safe bounded exploration of unverified hypotheses while reserving model adoption for valid downstream results. Verdicts are scoped to tested configurations, not entire method families.
 - **Immediate knowledge retention** — prompts, evidence, dataset/protocol state, experiments, decisions, and handoffs are updated as part of the work, not reconstructed later.
 - **Handoff before context loss** — every non-trivial work session that changes durable project state must update HANDOFF before being called complete; if context capacity is becoming low, preserving current truth takes priority over starting optional new work.
 
