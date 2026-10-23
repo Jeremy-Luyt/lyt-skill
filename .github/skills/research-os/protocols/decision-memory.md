@@ -11,6 +11,18 @@ Every completed experiment receives exactly one primary status:
 
 Record the reason in one or two sentences before elaboration.
 
+## Exploration admission versus model promotion
+
+**Explore boldly; promote rigorously.** Absence of evidence for a new mechanism is not evidence that it fails. A plausible mechanism is also not evidence of downstream benefit. Keep these two decisions separate:
+
+- **Exploration admission** — An untested or inconclusive idea may receive one bounded, discriminative experiment *without* prior positive end-to-end metrics when the hypothesis is falsifiable, meaningfully distinct from tested configurations, linked to a credible mechanism or an explicitly unresolved gap, and accompanied by legal data/supervision, frozen controls, cost ceiling, stop rule, and relevant safety checks. Admission is **not** permission to spend shared compute or bypass authorization, data gates, leakage barriers, or `BLOCK-EXECUTION` findings.
+- **Model promotion** — Replacing a baseline or claiming useful performance requires the preregistered downstream metrics on eligible evaluation data, per-subgroup effects where material, valid metric semantics, safety/topology, provenance, and appropriate replication. Intermediate ranking, proxy loss, gradient/JVP, or smoke success alone is not a promotion result.
+- **Inference scope** — Attach `REJECT`/`DEFER` to the exact tested configuration, task population/exposure, budget, and protocol. A failed configuration does not reject an entire method family. Positive *aggregate* stage performance does not disprove localized errors; negative aggregate performance does not identify their cause.
+- **Evidence maturity** — `UNVERIFIED` (not adequately tested) and `PROMISING` (a bounded positive mechanism signal, no established system gain) may annotate a *hypothesis or candidate*. They are **not** new final experiment verdicts: completed experiments still receive exactly one of `KEEP / REJECT / DEFER / INVALID`.
+- **Reopening** — Revisit a deferred family only with a stated mechanism or evidence distinction, a falsifiable prediction, and one cost-bounded test. Do not relabel or rerun an unchanged failed configuration; do not turn each nonpromoting result into an unlimited diagnostic or tuning chain.
+
+Lack of prior success should not block a safe exploration; lack of downstream evidence must block a scientific promotion.
+
 ## Conditional principle extraction
 
 Convert results into reusable knowledge using four fields:
