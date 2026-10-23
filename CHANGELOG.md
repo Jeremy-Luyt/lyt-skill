@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+Exploration admission versus model promotion:
+- added the explicit rule **Explore boldly; promote rigorously**: an untested or inconclusive mechanism can receive a bounded falsifiable exploration without prior positive DSC or other end-to-end results, while model adoption still requires the frozen downstream, data, safety, and provenance gates;
+- scoped negative/deferred verdicts to tested configurations, avoiding accidental rejection of entire method families or misreading aggregate stage benefits as proof that no local failures remain;
+- defined `UNVERIFIED`/`PROMISING` as optional hypothesis-maturity labels, not replacements for the existing four completed-experiment statuses;
+- updated the architecture-admission wording to accept a clearly labeled testable information-flow gap for *exploration*, without authorizing uncontrolled GPU use or weakening scientific promotion standards.
+
 Hypothesis-driven architecture admission:
 - expanded `protocols/scope-complexity.md` so deep-learning modules are treated as falsifiable hypotheses about observed information-flow failures rather than as collectible upgrades;
 - added a module-admission gate requiring an observed failure, information-flow location, mechanism match, simplest alternative, discriminative test, downstream utility target, ablation/removal criterion, and explicit cost/interaction accounting;
