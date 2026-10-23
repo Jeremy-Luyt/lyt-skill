@@ -3,21 +3,21 @@
 ## Complexity budget
 
 Before adding a new module/process, answer:
-1. Which observed failure mode does it address?
+1. Which observed failure mode **or explicitly unresolved, falsifiable scientific gap** does it address?
 2. What is the simplest alternative?
 3. Is there a no-learning/linear/small baseline?
 4. What new parameters/compute/confounders does it add?
 5. Can it be independently ablated?
 6. If it fails, what information will we gain?
 
-If these cannot be answered, prefer `DEFER`.
+If these cannot be answered, prefer `DEFER` for promotion or broad implementation. An unverified mechanism may still qualify for a smaller exploration experiment once the question, distinctness, controls, budget, and stop rule are made explicit.
 
 ## Hypothesis-driven architecture admission
 
-Deep-learning architecture is **not module collection**. Treat each proposed module as a falsifiable hypothesis about an observed failure in the current information flow.
+Deep-learning architecture is **not module collection**. Treat each proposed module as a falsifiable hypothesis about an observed failure **or a clearly labeled, unresolved possibility** in the current information flow. Do not require proof of a benefit before authorizing a bounded test designed to discover whether that benefit exists.
 
 Before admitting a new architecture component, require all of the following where applicable:
-1. **Observed failure** — name the concrete baseline behavior that is inadequate. "This module is newer/stronger/published" is not a failure observation.
+1. **Observed failure or testable gap** — name the concrete inadequate baseline behavior where measured; otherwise label the gap `UNVERIFIED` and state what observation would support or refute it. "This module is newer/stronger/published" is not a scientific explanation.
 2. **Information-flow location** — identify where useful information is missing, destroyed, poorly mixed, poorly normalized, insufficiently contextualized, or prematurely compressed.
 3. **Mechanism match** — state why the proposed operation should address that specific failure rather than merely add capacity.
 4. **Simplest alternative** — compare against the smallest credible intervention, including removing redundant transforms, a plain convolution/residual block, linear/no-learning control, or doing nothing.
@@ -41,7 +41,7 @@ Recommended sequence for architecture work:
 For architecture decisions, use the standard outcomes consistently:
 - `KEEP` — valid evidence shows decision-relevant downstream benefit or a necessary capability under stated conditions;
 - `REJECT` — a valid controlled comparison shows the component does not justify its cost/complexity under the tested conditions;
-- `DEFER` — the component is plausible, but the corresponding failure mode or expected utility has not yet been established;
+- `DEFER` — the tested configuration did not earn adoption, or its downstream utility is not established; this does not forbid a separately justified bounded exploration of a substantively different mechanism;
 - `INVALID` — the comparison cannot support an architecture decision because attribution, data, protocol, loading, or evaluation is broken.
 
 ## Scope gate

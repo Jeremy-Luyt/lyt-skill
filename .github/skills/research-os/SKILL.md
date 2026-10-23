@@ -42,7 +42,7 @@ Follow this order unless a safety emergency requires stopping earlier:
 8. **Lint the contract** — ensure premise audit, role, question, observations, competing hypotheses, evidence, dataset status where applicable, controls, success/failure criteria, stop rules, validation, decision rights, outputs, and provenance are explicit.
 9. **Separate epistemic states** — use FACT / SOURCE / USER-REPORTED / INFERENCE / HYPOTHESIS / ASSUMPTION / ALTERNATIVE / JUDGMENT / UNKNOWN where ambiguity matters. Read `protocols/epistemic-discipline.md`.
 10. **Generate competing hypotheses** — include plausible alternative explanations; define the smallest experiment that can distinguish them.
-11. **Rank candidate actions** — prioritize expected information gain × impact on the primary claim divided by compute + engineering + annotation + coordination + confounding. Read `protocols/scope-complexity.md`.
+11. **Rank candidate actions** — prioritize expected information gain × impact on the primary claim divided by compute + engineering + annotation + coordination + confounding. Distinguish **exploration admission** (a bounded test may proceed without prior positive metrics) from **model promotion** (requires downstream evidence). Read `protocols/scope-complexity.md`, `protocols/experiment-design.md`, and `protocols/decision-memory.md`.
 12. **Challenge before execution, proportional to risk** — for consequential work, have a Challenger audit the Builder's plan, but do not apply final-test/release/destructive controls to a low-risk diagnostic without a concrete reason. Every finding must state whether it blocks execution, blocks interpretation, bounds the claim, or is follow-up. Read `protocols/audit-and-review.md` and `protocols/risk-proportional-audit.md`.
 13. **Freeze the Experiment Contract** — premise, dataset/split status, baseline, changed variable, controls, metrics, thresholds, stop rule, output paths, and provenance.
 14. **Execute through applicable gates** — data/preflight → smoke → pilot → full. Never jump directly to a costly full run unless earlier gates are genuinely inapplicable and the reason is recorded; likewise, do not manufacture unnecessary gates for a bounded R0 diagnostic.
@@ -178,6 +178,8 @@ The Challenger must produce actionable objections: every criticism should name t
 - **REJECT** — valid evidence argues against the tested hypothesis/method under stated conditions.
 - **DEFER** — run is valid but evidence is insufficient, low-priority, or blocked; do not pretend it answered the question.
 - **INVALID** — protocol, data, code, leakage, metric, or execution defect prevents scientific interpretation.
+
+**Explore boldly; promote rigorously.** A valid negative result is scoped to its tested configuration and does not automatically reject the whole method family. An unverified hypothesis may qualify for a small safe experiment without prior Dice/downstream gains, but adoption requires preregistered end-to-end and safety evidence. `UNVERIFIED` and `PROMISING` are optional candidate-maturity labels, not fifth/sixth experiment verdicts. See `protocols/decision-memory.md`.
 
 Dataset gate statuses (`PASS`, `PASS-WITH-LIMITATIONS`, `BLOCKED`, `INVALID-DATA`) describe dataset readiness and do not replace the final experiment decision vocabulary.
 

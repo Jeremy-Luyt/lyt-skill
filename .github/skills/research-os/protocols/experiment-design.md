@@ -20,6 +20,14 @@ Required commitments:
 
 A claim-bearing experiment must not start from a `BLOCKED` or `INVALID-DATA` Dataset Integrity Gate. Debugging runs may proceed only if explicitly labeled as non-scientific diagnostics.
 
+## Two distinct scientific gates
+
+**Exploration admission** asks whether an unproven idea is worth a bounded discriminative test, not whether it has already improved the final metric. Require a valid hypothesis and data contract, meaningful distinction from historical attempts, an affordable experiment, a stop rule, and applicable authorization/safety. Unknown effectiveness is not a scientific failure.
+
+**Model promotion** asks whether the tested configuration has earned adoption under frozen, valid end-to-end evaluation, safety, provenance, and statistical-unit constraints. A successful smoke, mechanism probe, or favorable intermediate metric cannot substitute for this evidence.
+
+Use `decision-memory.md` for scope-aware verdicts and optional evidence-maturity labels; keep the four primary completed-experiment statuses unchanged.
+
 ## Premise-before-variable principle
 
 Before deciding what to change, ask whether the proposed variable is actually implicated by valid evidence. If the apparent bottleneck depends on an unverified assumption, wrong metric interpretation, stale publication claim, or incomplete data audit, resolve that first.
